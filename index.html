@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/varuna" rel="stylesheet">               
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="mode_nuit">
+                <label class="switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <p class="hover-text">Mode light/dark</p>
+            </div>        
+            <div class="titre">
+                <img src="./img/pokemon-logo-thumbnail.png" alt="logo Pokémon" class="logo">
+                <h1 class="outlined-text">Pokedex</h1>                    
+            </div>
+        </div>
+        <div class="section">
+            <div id="zone_recherche">
+                <div id="recherche_avancée">
+                    <h3> Tape un nom ou un numéro et trouve ton Pokémon :</h3>            
+                    <input type="text" id="search" placeholder="Recherche un Pokémon...">          
+                    <p class="info"> La recherche avancée peut aussi servir pour chercher des Pokémons par type, faiblesse, talent et bien plus encore !</p>
+                </div>
+                <img src="./img/choix.PNG" alt="ou">
+                <select id="type-filter">
+                    <option value="">Filtre par type</option>                
+                </select>        
+            </div>
+            <div id="pokemon-list"></div>
+            <div id="pagination">
+                <button id="prev" disabled>Précédent</button>
+                <span id="page-number">1</span>
+                <button id="next">Suivant</button>
+            </div>
+        </div>        
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
