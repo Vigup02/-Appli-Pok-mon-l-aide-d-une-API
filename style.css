@@ -30,7 +30,7 @@ body.dark-mode .header {
 
 .mode_nuit {
     position: absolute;
-    right: 1%; /* Ajustez la valeur selon vos besoins */
+    right: 1%; 
     top: 25%;
     transform: translateY(-50%);
     display: flex;
@@ -102,8 +102,8 @@ input:checked + .slider:before {
   
   /* Affichage du cadre au survol de la switch */
   .mode_nuit:hover {
-    border: 2px solid #2196F3; /* Couleur de l'encadré */
-    border-radius: 10px; /* Pour les coins arrondis */
+    border: 2px solid #2196F3;
+    border-radius: 10px; 
   }
     
 .titre {
@@ -137,8 +137,8 @@ h1 {
 }
 
 .outlined-text {
-        color: #ffcd02; /* Couleur du texte */
-        font-weight: bold; /* Pour rendre le texte plus épais */
+        color: #ffcd02;
+        font-weight: bold;
         text-shadow: 
           -5px -5px 0 #3761a8,  
           5px -5px 0 #3761a8,
@@ -265,97 +265,79 @@ body.dark-mode .pokemon p {
 
 .pokemon ul {
     text-align: left;
-    color : #444;    
-    font-size: 10px;
-    padding : 0 0 0 5px;
-    margin : 5px;
-
+    color : #555;
+    padding-left: 20px;
+    font-size: 14px;
 }
 
 body.dark-mode .pokemon ul {
-    color:#f7f7f7;    
+    color: #f7f7f7;
 }
 
 .progress-bar {
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    margin: 2px;
+    width: 100%;
+    background-color: #ddd;
+    height: 5px;
+    border-radius: 3px;
 }
 
 .progress-bar-inner {
     height: 5px;
-    border-radius: 5px;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    line-height: 5px; /* Assurez-vous que le texte est centré verticalement */
+    border-radius: 3px;
 }
 
-.hp { background-color: #ff0000; } /* Red for HP */
-.attack { background-color: #f08030; } /* Orange for Attack */
-.defense { background-color: #f8d030; } /* Yellow for Defense */
-.special-attack { background-color: #6890f0; } /* Blue for Special Attack */
-.special-defense { background-color: #78c850; } /* Green for Special Defense */
-.speed { background-color: #f85888; } /* Pink for Speed */
+.progress-bar-inner.hp {
+    background-color: #ff0000;
+}
+
+.progress-bar-inner.attack {
+    background-color: #f08030;
+}
+
+.progress-bar-inner.defense {
+    background-color: #f8d030;
+}
+
+.progress-bar-inner.hover-text.special-attack {
+    background-color: #6890f0;
+}
+
+.progress-bar-inner.special-defense {
+    background-color: #78c850;
+}
+
+.progress-bar-inner.speed {
+    background-color: #f85888;
+}
 
 #pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 20px 0;
 }
 
 #pagination button {
-    padding: 10px 20px;
-    margin: 0 10px;
+    padding: 10px;
     border: none;
+    border-radius: 5px;
     background-color: #ffcd02;
     color: #444;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
+
+#pagination button:hover {
+    background-color: #296bfe;
+    color: #ddd;
+   }
 
 #pagination button:disabled {
     background-color: #ddd;
     cursor: not-allowed;
 }
 
-body.dark-mode #pagination button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
-
-#pagination button:hover:not(:disabled) {
-    background-color: #555;
-    color :#ffcd02;
-}
-
-body.dark-mode #pagination button {
-    background-color: #ffcd02;
-    color: #444;
-}
-
-body.dark-mode #pagination button:hover:not(:disabled) {
-    background-color: #3761a8;
-    color:#444;
-}
-
-#page-number {
+#pagination span {
     margin: 0 10px;
     font-size: 18px;
-    font-weight: bold;
-    color: #ffcd02;
-}
-
-@media (max-width: 520px) {
-    .titre {
-        flex-direction: column;
-        align-items: center;
-    }
-    #zone_recherche {
-        flex-direction: column;
-        align-items: center;
-    }
 }

@@ -8,37 +8,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageNumber = document.getElementById('page-number');
 
     let currentPage = 1;
-    const limit = 100; // Nombre de Pokémon par page
-    let totalPokemons = 0; // Nombre total de Pokémon dans l'API (sera récupéré plus tard)
+    const limit = 20; // Nombre de Pokémon par page
+    let totalPokemons = 0; // Nombre total de Pokémon
+    let allPokemonData = []; // Pour stocker toutes les données de Pokémon
+    let filteredPokemonData = []; // Pour stocker les données filtrées
 
     // Calculer le nombre total de pages
-    const totalPages = Math.ceil(1008 / limit); // 1008 est le nombre total de Pokémon dans l'API
+    const totalPages = Math.ceil(1008 / limit);
 
-    // Récupérer les données Pokémon de l'API avec pagination
-    const fetchPokemon = async (page) => {
-        pokemonList.innerHTML = ''; // Clear the list before fetching new data
-        const offset = (page - 1) * limit;
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
-        const data = await res.json();
-        totalPokemons = data.count; // Mettre à jour le nombre total de Pokémon
-        data.results.forEach(async (pokemon) => {
-            const resPokemon = await fetch(pokemon.url);
-            const pokemonData = await resPokemon.json();
-            displayPokemon(pokemonData);
-        });
-        updatePaginationButtons();
+    // Récupérer les données de tous les Pokémon et les stocker
+    const preloadAllPokemonData = async () => {
+        let promises = [];
+        for (let i = 1; i <= 1008; i++) {
+            promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`).then(res => res.json()));
+        }
+        allPokemonData = await Promise.all(promises);
+        totalPokemons = allPokemonData.length;
+        filteredPokemonData = allPokemonData; // Initialement, toutes les données sont non filtrées
+        displayPage(currentPage);
     };
 
-    // Récupérer les types de Pokémon à partir de l'API
-    const fetchTypes = async () => {
-        const res = await fetch('https://pokeapi.co/api/v2/type');
-        const data = await res.json();
-        data.results.forEach(type => {
-            const option = document.createElement('option');
-            option.value = type.name;
-            option.textContent = capitalizeFirstLetter(type.name);
-            typeFilter.appendChild(option);
-        });
+    // Afficher la page actuelle des Pokémon
+    const displayPage = (page) => {
+        pokemonList.innerHTML = ''; // Clear the list before displaying new data
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        const pokemonToDisplay = filteredPokemonData.slice(start, end);
+        pokemonToDisplay.forEach(pokemon => displayPokemon(pokemon));
+        updatePaginationButtons();
     };
 
     // Afficher un seul Pokémon avec des informations détaillées
@@ -70,6 +67,18 @@ document.addEventListener('DOMContentLoaded', () => {
         pokemonList.appendChild(pokemonDiv);
     };
 
+    // Récupérer les types de Pokémon à partir de l'API
+    const fetchTypes = async () => {
+        const res = await fetch('https://pokeapi.co/api/v2/type');
+        const data = await res.json();
+        data.results.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type.name;
+            option.textContent = capitalizeFirstLetter(type.name);
+            typeFilter.appendChild(option);
+        });
+    };
+
     // Mettre en majuscule la première lettre d'une chaîne de caractères
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
@@ -79,32 +88,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterPokemon = () => {
         const searchValue = searchInput.value.toLowerCase();
         const typeValue = typeFilter.value.toLowerCase();
-        const pokemonItems = document.querySelectorAll('.pokemon');
-        
-        pokemonItems.forEach((item) => {
-            const pokemonName = item.querySelector('h2').textContent.toLowerCase();
-            const pokemonTypes = item.querySelector('p:nth-of-type(2)').textContent.toLowerCase().split(', ');
+        filteredPokemonData = allPokemonData.filter(pokemon => {
+            const pokemonName = pokemon.name.toLowerCase();
+            const pokemonId = pokemon.id.toString();
+            const pokemonTypes = pokemon.types.map(typeInfo => typeInfo.type.name.toLowerCase());
+            const pokemonAbilities = pokemon.abilities.map(abilityInfo => abilityInfo.ability.name.toLowerCase());
+            const pokemonWeaknesses = []; // Placeholder for weaknesses if you have that data
 
-            const matchesSearch = pokemonName.includes(searchValue);
+            const matchesSearch = 
+                pokemonName.includes(searchValue) ||
+                pokemonId.includes(searchValue) ||
+                pokemonTypes.some(type => type.includes(searchValue)) ||
+                pokemonAbilities.some(ability => ability.includes(searchValue)) ||
+                pokemonWeaknesses.some(weakness => weakness.includes(searchValue));
+
             const matchesType = typeValue === '' || pokemonTypes.includes(typeValue);
-
-            if (matchesSearch && matchesType) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
+            return matchesSearch && matchesType;
         });
+        currentPage = 1; // Reset to first page
+        displayPage(currentPage);
     };
 
     // Update l'état des boutons de pagination
     const updatePaginationButtons = () => {
         prevButton.disabled = currentPage === 1;
-        nextButton.disabled = currentPage === totalPages;
+        nextButton.disabled = currentPage === Math.ceil(filteredPokemonData.length / limit);
         pageNumber.textContent = currentPage;
     };
 
-     // Basculer le thème entre le mode clair et le mode foncé
-     const toggleTheme = () => {
+    // Basculer le thème entre le mode clair et le mode foncé
+    const toggleTheme = () => {
         document.body.classList.toggle('dark-mode');       
     };
 
@@ -121,19 +134,19 @@ document.addEventListener('DOMContentLoaded', () => {
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
-            fetchPokemon(currentPage);
+            displayPage(currentPage);
         }
     });
 
-     // Event listener for next page button
-     nextButton.addEventListener('click', () => {
-        if (currentPage < totalPages) {
+    // Event listener for next page button
+    nextButton.addEventListener('click', () => {
+        if (currentPage < Math.ceil(filteredPokemonData.length / limit)) {
             currentPage++;
-            fetchPokemon(currentPage);
+            displayPage(currentPage);
         }
     });
 
     // Récupération initiale des Pokémon et des types
-    fetchPokemon(currentPage);
+    preloadAllPokemonData();
     fetchTypes();
 });
