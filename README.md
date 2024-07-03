@@ -8,9 +8,9 @@ Ce projet est une application Pokedex créée en utilisant uniquement HTML, CSS 
 ## Fonctionnalités
 
 - Affichage d'une liste de Pokémon avec des détails tels que l'image, le nom, l'ID, le type, la hauteur, le poids et les statistiques de base.
-- Recherche de Pokémon par nom.
+- Recherche de Pokémon par nom, numéro, type, force, faiblesse...
 - Filtrage de Pokémon par type.
-- Pagination pour naviguer entre les pages de Pokémon (100 Pokémon par page).
+- Pagination pour naviguer entre les pages de Pokémon (20 Pokémon par page).
 - Thème clair et sombre pour améliorer l'expérience utilisateur.
 
 ## Technologies Utilisées
@@ -35,10 +35,10 @@ Ce projet est une application Pokedex créée en utilisant uniquement HTML, CSS 
 ## Utilisation
 
 1. Ouvrez le fichier `index.html` dans votre navigateur préféré pour lancer l'application.
-2. Utilisez la barre de recherche pour trouver un Pokémon par son nom.
+2. Utilisez la barre de recherche pour trouver un Pokémon par son nom, numéro, type, force, faiblesse...
 3. Utilisez le menu déroulant pour filtrer les Pokémon par type.
-4. Naviguez entre les pages de Pokémon en utilisant les boutons "Previous" et "Next".
-5. Utilisez le bouton "Toggle Theme" pour basculer entre les thèmes clair et sombre.
+4. Naviguez entre les pages de Pokémon en utilisant les boutons "Précédent" et "Suivant".
+5. Utilisez le bouton "Thème à bascule" pour basculer entre les thèmes clair et sombre.
 
 ## Structure du Projet
 
